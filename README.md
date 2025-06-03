@@ -1,4 +1,6 @@
-# AIview
+<p align="center">
+    <img src="./docs/AIview.png" width="400" height="400" alt="Project Logo" />
+</p>
 
 ## Description
 
