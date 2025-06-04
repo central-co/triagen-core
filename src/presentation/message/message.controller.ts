@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { MessageService } from "./message.service";
 
 @Controller("message")
@@ -11,9 +11,7 @@ export class MessageController {
     }
 
     @Post("whatsapp")
-    async postWhatsappMessage() {
-        return this.messageService.postWhatsappMessage();
+    async postWhatsappMessage(@Body() message: any) {
+        return this.messageService.postWhatsappMessage(message);
     }
-
-
 }

@@ -12,8 +12,8 @@ export class ValidateWebhookUseCase {
                 console.log("Webhook verified successfully with token:", params.verifyToken);
                 message = params.challenge;
             } else {
-                console.error("Invalid verification token:", process.env.WHATSAPP_VERIFY_TOKEN);
-                throw new Error("Invalid verification token");
+                console.error("Invalid verify token:", process.env.WHATSAPP_VERIFY_TOKEN);
+                throw new Error("Invalid verify token");
             }
         } else {
             console.error("Invalid mode:", params.mode);
