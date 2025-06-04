@@ -1,4 +1,4 @@
-import { ChatRepository } from "@domain/repositories/chat.repository";
+import { ChatRepository } from "@domain/repositories/chat.repository.interface";
 import { InjectRedis } from "@nestjs-modules/ioredis";
 import { Injectable } from "@nestjs/common";
 import Redis from "ioredis";
@@ -27,5 +27,4 @@ export class RedisChatRepository extends ChatRepository {
         const rawList = await this.redis.lrange(key, 0, -1);
         return rawList.map((item) => JSON.parse(item));
     }
-
 }

@@ -1,5 +1,5 @@
 import { Message } from "@domain/entities/message.entity";
-import { ChatRepository } from "@domain/repositories/chat.repository";
+import { ChatRepository } from "@domain/repositories/chat.repository.interface";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
