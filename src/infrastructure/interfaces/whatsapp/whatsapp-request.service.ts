@@ -16,7 +16,7 @@ export class WhatsappRequestService extends RequestService {
 
         return `${baseUrl}/${phoneNumberId}/messages`;
     }
-    private getPayload(message: Message, text: string): any {
+    private getPayload(message: Message): any {
         return {
             messaging_product: "whatsapp",
             recipient_type: "individual",
@@ -24,7 +24,7 @@ export class WhatsappRequestService extends RequestService {
             type: "text",
             text: {
                 preview_url: false,
-                body: text,
+                body: message.text,
             },
             context: {
                 message_id: message.id,
@@ -41,7 +41,7 @@ export class WhatsappRequestService extends RequestService {
 
     async postRequest(message: Message): Promise<any> {
         const url = this.getUrl();
-        const payload = this.getPayload(message, 'teste');
+        const payload = this.getPayload(message);
         const headers = this.getHeaders();
 
         try {
