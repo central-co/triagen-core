@@ -1,8 +1,9 @@
-import { ReceiveMessageUseCase } from "@application/usecases/receive-message.usecase";
-import { SendMessageUseCase } from "@application/usecases/send-message.usecase";
-import { ValidateWebhookUseCase } from "@application/usecases/validate-webhook.usecase";
-import { WhatsappIncomingMapper } from "@infrastructure/mappers/whatsapp/whatsapp-incoming.mapper";
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { ReceiveMessageUseCase } from '@application/usecases/receive-message.usecase';
+import { SendMessageUseCase } from '@application/usecases/send-message.usecase';
+import { GenerateResponseUseCase } from '@application/usecases/generate-response.usecase';
+import { ValidateWebhookUseCase } from '@application/usecases/validate-webhook.usecase';
+import { WhatsappIncomingMapper } from '@infrastructure/mappers/whatsapp/whatsapp-incoming.mapper';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 @Injectable()
 export class MessageService {
@@ -10,6 +11,7 @@ export class MessageService {
         private readonly whatsappIncomingMapper: WhatsappIncomingMapper,
         private readonly validadeWebhook: ValidateWebhookUseCase,
         private readonly receiveMessage: ReceiveMessageUseCase,
+        private readonly generateResponse: GenerateResponseUseCase,
         private readonly sendMessage: SendMessageUseCase,
     ) {}
 
@@ -29,8 +31,8 @@ export class MessageService {
         } catch (error) {
             throw new HttpException(
                 'Invalid mode or verify token',
-                HttpStatus.BAD_REQUEST
-            )
+                HttpStatus.BAD_REQUEST,
+            );
         }
 
         return message;
@@ -52,9 +54,9 @@ export class MessageService {
 
         await this.receiveMessage.execute(mappedMessage);
 
-        // TODO: Implement the logic to send a response message
-        // ! TA MOCKADO ISSO AQUI AINDA, TEM QUE TER TODO UM PROCESSO ANTES DISSO
-        const response = await this.sendMessage.execute(mappedMessage);
+        const reply = await this.generateResponse.execute([mappedMessage]);
+
+        const response = await this.sendMessage.execute(mappedMessage, reply);
 
         return response;
     }

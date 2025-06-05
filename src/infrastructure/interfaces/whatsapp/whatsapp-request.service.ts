@@ -1,6 +1,6 @@
-import { Message } from "@domain/entities/message.entity";
-import { RequestService } from "@domain/interfaces/request.service.interface";
-import { Injectable } from "@nestjs/common";
+import { Message } from '@domain/entities/message.entity';
+import { RequestService } from '@domain/interfaces/request.service.interface';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class WhatsappRequestService extends RequestService {
@@ -18,30 +18,30 @@ export class WhatsappRequestService extends RequestService {
     }
     private getPayload(message: Message, text: string): any {
         return {
-            messaging_product: "whatsapp",
-            recipient_type: "individual",
+            messaging_product: 'whatsapp',
+            recipient_type: 'individual',
             to: message.from.id,
-            type: "text",
+            type: 'text',
             text: {
                 preview_url: false,
                 body: text,
             },
             context: {
                 message_id: message.id,
-            }
+            },
         };
     }
 
     private getHeaders(): Record<string, string> {
         return {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.WHATSAPP_API_KEY}`,
+            Authorization: `Bearer ${process.env.WHATSAPP_API_KEY}`,
         };
     }
 
-    async postRequest(message: Message): Promise<any> {
+    async postRequest(message: Message, text: string): Promise<any> {
         const url = this.getUrl();
-        const payload = this.getPayload(message, 'teste');
+        const payload = this.getPayload(message, text);
         const headers = this.getHeaders();
 
         try {

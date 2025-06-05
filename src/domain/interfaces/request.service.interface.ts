@@ -1,5 +1,5 @@
-import { Message } from "@domain/entities/message.entity";
+import { Message } from '@domain/entities/message.entity';
 
 export abstract class RequestService {
-    abstract postRequest(message: Message): Promise<any>;
+    abstract postRequest(message: Message, text: string): Promise<any>;
 }

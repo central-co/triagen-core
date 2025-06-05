@@ -10,6 +10,14 @@ Dado o perfil do usuário (currículo) e os requisitos de uma vaga, o sistema co
 
 O objetivo é oferecer uma ferramenta de preparação e triagem inteligente, útil tanto para candidatos quanto para recrutadores.
 
+## Environment variables
+
+Before running the application, configure these variables:
+
+- `WHATSAPP_VERIFY_TOKEN`, `WHATSAPP_API_URL`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_API_KEY` for WhatsApp integration.
+- `REDIS_HOST`, `REDIS_PORT` for Redis storage.
+- `GEMINI_API_KEY` for generating responses using Gemini.
+
 ## Project setup
 
 ```bash
