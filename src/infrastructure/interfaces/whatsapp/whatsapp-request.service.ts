@@ -1,15 +1,20 @@
 import { Message } from "@domain/entities/message.entity";
 import { RequestService } from "@domain/interfaces/request.service.interface";
 import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class WhatsappRequestService extends RequestService {
+    constructor(private readonly configService: ConfigService) {
+        super();
+    }
+
     private getUrl(): string {
-        const baseUrl = process.env.WHATSAPP_API_URL;
+        const baseUrl = this.configService.get<string>('WHATSAPP_API_URL');
         if (!baseUrl) {
             throw new Error('WHATSAPP_API_URL is not defined');
         }
-        const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+        const phoneNumberId = this.configService.get<string>('WHATSAPP_PHONE_NUMBER_ID');
         if (!phoneNumberId) {
             throw new Error('WHATSAPP_PHONE_NUMBER_ID is not defined');
         }
@@ -35,7 +40,7 @@ export class WhatsappRequestService extends RequestService {
     private getHeaders(): Record<string, string> {
         return {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.WHATSAPP_API_KEY}`,
+            'Authorization': `Bearer ${this.configService.get<string>('WHATSAPP_API_KEY')}`,
         };
     }
 

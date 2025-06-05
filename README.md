@@ -16,6 +16,20 @@ O objetivo é oferecer uma ferramenta de preparação e triagem inteligente, út
 $ npm install
 ```
 
+## Environment variables
+
+Create a `.env` file based on the provided `.env.example` and set the following keys:
+
+```
+WHATSAPP_VERIFY_TOKEN=<your verify token>
+WHATSAPP_API_URL=<whatsapp base url>
+WHATSAPP_PHONE_NUMBER_ID=<phone number id>
+WHATSAPP_API_KEY=<api key>
+REDIS_HOST=<redis host>
+REDIS_PORT=<redis port>
+PORT=<application port>
+```
+
 ## Compile and run the project
 
 ```bash

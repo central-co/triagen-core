@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { MessageModule } from '@presentation/message/message.module';
 
 @Module({
-  imports: [MessageModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    MessageModule,
+  ],
   controllers: [],
   providers: [],
 })
