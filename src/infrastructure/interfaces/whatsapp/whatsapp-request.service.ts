@@ -11,11 +11,11 @@ export class WhatsappRequestService extends RequestService {
         super();
     }
     private getUrl(): string {
-        const baseUrl = this.configService.get<string>('whatsapp.apiUrl');
+        const baseUrl = this.configService.get<string>('WHATSAPP_API_URL');
         if (!baseUrl) {
             throw new Error('WHATSAPP_API_URL is not defined');
         }
-        const phoneNumberId = this.configService.get<string>('whatsapp.phoneNumberId');
+        const phoneNumberId = this.configService.get<string>('WHATSAPP_PHONE_NUMBER_ID');
         console.log('phoneNumberId', phoneNumberId);
         if (!phoneNumberId) {
             throw new Error('WHATSAPP_PHONE_NUMBER_ID is not defined');
@@ -42,7 +42,7 @@ export class WhatsappRequestService extends RequestService {
     private getHeaders(): Record<string, string> {
         return {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.configService.get<string>('whatsapp.apiKey')}`,
+            'Authorization': `Bearer ${this.configService.get<string>('WHATSAPP_API_KEY')}`,
         };
     }
 

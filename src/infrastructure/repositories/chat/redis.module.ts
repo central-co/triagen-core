@@ -11,8 +11,8 @@ import { ConfigService } from "@nestjs/config";
             useFactory: (configService: ConfigService) => ({
                 type: 'single',
                 options: {
-                    host: configService.get<string>('redis.host'),
-                    port: configService.get<number>('redis.port'),
+                    host: configService.get<string>('REDIS_HOST'),
+                    port: configService.get<number>('REDIS_PORT'),
                 },
             }),
         }),

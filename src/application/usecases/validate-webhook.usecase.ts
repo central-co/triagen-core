@@ -1,7 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { config } from 'dotenv';
-config();
 
 @Injectable()
 export class ValidateWebhookUseCase {
@@ -12,11 +10,11 @@ export class ValidateWebhookUseCase {
         let message: string;
 
         if (params.mode === 'subscribe'){
-            if (params.verifyToken === this.configService.get<string>('whatsapp.verifyToken')) {
+            if (params.verifyToken === this.configService.get<string>('WHATSAPP_VERIFY_TOKEN')) {
                 console.log("Webhook verified successfully with token:", params.verifyToken);
                 message = params.challenge;
             } else {
-                console.error("Invalid verify token:", this.configService.get<string>('whatsapp.verifyToken'));
+                console.error("Invalid verify token:", this.configService.get<string>('WHATSAPP_VERIFY_TOKEN'));
                 throw new Error("Invalid verify token");
             }
         } else {

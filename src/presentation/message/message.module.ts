@@ -10,11 +10,13 @@ import { MapperModule } from "@infrastructure/mappers/mapper.module";
 import { SendMessageUseCase } from "@application/usecases/send-message.usecase";
 import { RequestService } from "@domain/interfaces/request.service.interface";
 import { WhatsappRequestService } from "@infrastructure/interfaces/whatsapp/whatsapp-request.service";
+import { OpenAIModule } from "@infrastructure/interfaces/openai/openai.module";
 
 @Module({
     imports: [
         RedisModule,
-        MapperModule
+        MapperModule,
+        OpenAIModule.forRoot(),
     ],
     controllers: [MessageController],
     providers: [
