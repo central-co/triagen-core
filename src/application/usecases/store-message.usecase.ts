@@ -3,12 +3,12 @@ import { ChatRepository } from "@domain/repositories/chat.repository.interface";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
-export class ReceiveMessageUseCase {
+export class StoreMessageUseCase {
     constructor(
-        private readonly chatRepo: ChatRepository,
+        private readonly chatRepository: ChatRepository,
     ) {}
 
     async execute(message: Message): Promise<void> {
-        await this.chatRepo.saveMessage(message.from.id, message);
+        await this.chatRepository.saveMessage(message.from.id, message);
     }
 }

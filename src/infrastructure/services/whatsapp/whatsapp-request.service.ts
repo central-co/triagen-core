@@ -16,7 +16,6 @@ export class WhatsappRequestService extends RequestService {
             throw new Error('WHATSAPP_API_URL is not defined');
         }
         const phoneNumberId = this.configService.get<string>('WHATSAPP_PHONE_NUMBER_ID');
-        console.log('phoneNumberId', phoneNumberId);
         if (!phoneNumberId) {
             throw new Error('WHATSAPP_PHONE_NUMBER_ID is not defined');
         }
