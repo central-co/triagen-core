@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -10,8 +10,8 @@ export class AppController {
         return { status: 'ok' };
     }
 
-    @Get('auth')
-    async getAuth(): Promise<{ token: string }> {
-        return await this.appService.getAuth();
+    @Post('auth')
+    async postAuth(@Body() authDto: any): Promise<{ token: string }> {
+        return await this.appService.postAuth();
     }
 }

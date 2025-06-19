@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 export class AppService {
     constructor(private readonly authUseCase: AuthUseCase) {}
 
-    async getAuth(): Promise<{ token: string }> {
+    async postAuth(): Promise<{ token: string }> {
         console.log('Generating JWT token for authentication service');
         const token = await this.authUseCase.execute({
             identity: 'triagen-participant',
