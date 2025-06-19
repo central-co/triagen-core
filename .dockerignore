@@ -1,0 +1,34 @@
+# Dependências
+node_modules
+npm-debug.log
+
+# Arquivos de build
+dist
+build
+coverage
+generated
+
+# Arquivos de ambiente
+.env
+.env.*
+
+# Arquivos de controle de versão
+.git
+.gitignore
+
+# Arquivos de IDE e editores
+.idea
+.vscode
+*.swp
+*.swo
+
+# Arquivos de testes
+test
+**/*.spec.ts
+**/*.test.ts
+
+# Outros
+README.md
+.prettierrc
+.eslintrc
+eslint.config.mjs
