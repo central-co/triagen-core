@@ -28,7 +28,7 @@ export class JwtTokenProvider extends ITokenProvider {
         token.addGrant({
             canPublish: true,
             roomJoin: true,
-            room: 'triagen-room'
+            room: 'triagen-room',
         });
 
         return await token.toJwt();

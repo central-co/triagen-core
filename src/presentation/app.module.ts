@@ -1,16 +1,18 @@
 import { Module } from '@nestjs/common';
-import { AppController } from 'src/presentation/app.controller';
-import { ConfigModule } from '@nestjs/config';
+import { AppController } from '@presentation/app.controller';
 import { AppService } from '@presentation/app.service';
+import { ConfigModule } from '@nestjs/config';
 import { ITokenProvider } from '@domain/interfaces/providers/token.provider.interface';
 import { JwtTokenProvider } from '@infrastructure/providers/jwt-token.provider';
 import { AuthUseCase } from '@application/usecases/auth.usecase';
+import { CompanyModule } from './company/company.module';
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
         }),
+        CompanyModule,
     ],
     controllers: [AppController],
     providers: [
