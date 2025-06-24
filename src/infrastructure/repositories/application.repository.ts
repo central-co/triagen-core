@@ -24,6 +24,10 @@ export class ApplicationRepository extends IApplicationRepository {
         return await this.prisma.application.findUnique({
             where: {
                 shortCode: shortCode,
+            },
+            include: {
+                candidate: true,
+                job: true,
             }
         });
     }

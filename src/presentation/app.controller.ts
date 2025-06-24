@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Header, Post } from '@nestjs/common';
 import { AppService } from './app.service';
+import { AuthDto } from './dto/auth.dto';
 
 @Controller()
 export class AppController {
@@ -12,7 +13,7 @@ export class AppController {
 
     @Post('auth')
     @Header('Access-Control-Allow-Origin', '*')
-    async postAuth(@Body() authDto: any): Promise<{ token: string }> {
-        return await this.appService.postAuth();
+    async postAuth(@Body() authDto: AuthDto): Promise<{ token: string }> {
+        return await this.appService.postAuth(authDto);
     }
 }

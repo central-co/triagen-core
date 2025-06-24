@@ -10,7 +10,6 @@ export class NodemailerModule {
     static forRoot(): DynamicModule {
         return {
             module: NodemailerModule,
-            imports: [ConfigModule],
             providers: [
                 {
                     provide: NodemailerModule.NODEMAILER_CLIENT,

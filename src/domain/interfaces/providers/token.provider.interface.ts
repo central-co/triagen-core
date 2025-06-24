@@ -1,3 +1,3 @@
 export abstract class ITokenProvider {
-    abstract generate(payload: any): Promise<string>;
+    abstract generate(email: string, name: string, roomName: string): Promise<string>;
 }
