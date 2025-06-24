@@ -8,19 +8,14 @@ export class JwtTokenProvider extends ITokenProvider {
     constructor(private readonly configService: ConfigService) {
         super();
     }
-    async generate(payload: any): Promise<string> {
-        console.log(
-            `Generating JWT token with payload: ${JSON.stringify(payload)}`,
-        );
-        const participantName = 'triagen-participant';
-        console.log(`Generating JWT for participant: ${participantName}`);
+    async generate(email: string, name: string, roomName: string): Promise<string> {
 
         const token = new AccessToken(
             this.configService.get<string>('LIVEKIT_API_KEY'),
             this.configService.get<string>('LIVEKIT_API_SECRET'),
             {
-                identity: participantName,
-                name: participantName,
+                identity: email,
+                name: name,
                 ttl: 60 * 60, // 1 hour
             },
         );
@@ -28,7 +23,7 @@ export class JwtTokenProvider extends ITokenProvider {
         token.addGrant({
             canPublish: true,
             roomJoin: true,
-            room: 'triagen-room'
+            room: roomName,
         });
 
         return await token.toJwt();
