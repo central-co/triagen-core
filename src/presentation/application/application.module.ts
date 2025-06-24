@@ -7,7 +7,9 @@ import { ICandidateRepository } from "@domain/interfaces/repositories/candidate.
 import { CandidateRepository } from "@infrastructure/repositories/candidate.repository";
 import { RetriveCandidateUseCase } from "@application/usecases/candidate/retrieve-candidate.usecase";
 import { GenerateShortCodeUseCase } from "@application/usecases/generate-shortcode.usecase";
-import { SaveApplicationUseCase } from "@application/usecases/application/save.application.usecase";
+import { SaveApplicationUseCase } from "@application/usecases/application/save-application.usecase";
+import { IApplicationRepository } from "@domain/interfaces/repositories/application.repository.interface";
+import { ApplicationRepository } from "@infrastructure/repositories/application.repository";
 
 @Module({
     imports: [PrismaModule.forRoot()],
@@ -21,6 +23,10 @@ import { SaveApplicationUseCase } from "@application/usecases/application/save.a
         {
             provide: ICandidateRepository,
             useClass: CandidateRepository,
+        },
+        {
+            provide: IApplicationRepository,
+            useClass: ApplicationRepository,
         }
     ],
 })

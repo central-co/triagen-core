@@ -1,4 +1,4 @@
-import { SaveApplicationUseCase } from "@application/usecases/application/save.application.usecase";
+import { SaveApplicationUseCase } from "@application/usecases/application/save-application.usecase";
 import { RetriveCandidateUseCase } from "@application/usecases/candidate/retrieve-candidate.usecase";
 import { SaveCandidateUseCase } from "@application/usecases/candidate/save-candidate.usecase";
 import { GenerateShortCodeUseCase } from "@application/usecases/generate-shortcode.usecase";
