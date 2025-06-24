@@ -12,7 +12,7 @@ RUN npm ci
 COPY . .
 
 # Gerar Prisma Client
-# RUN npx prisma generate
+RUN npx prisma generate
 
 # Compilar a aplicação
 RUN npm run build
@@ -28,14 +28,14 @@ WORKDIR /app
 # Copiar apenas package.json e package-lock.json
 COPY package*.json ./
 # Instalar apenas dependências de produção
-RUN npm clean-install --omit=dev
+RUN npm ci --omit=dev
 
 # Copiar código compilado do estágio builder
 COPY --from=builder /app/dist ./dist
-# COPY --from=builder /app/prisma ./prisma
-# COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 # Expor a porta que a aplicação usa
 EXPOSE 3000
 # Comando para iniciar a aplicação
-CMD ["node", "dist/main.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main.js"]
