@@ -6,6 +6,7 @@ import { ITokenProvider } from '@domain/interfaces/providers/token.provider.inte
 import { JwtTokenProvider } from '@infrastructure/providers/jwt-token.provider';
 import { AuthUseCase } from '@application/usecases/auth.usecase';
 import { CompanyModule } from './company/company.module';
+import { ApplicationModule } from './application/application.module';
 
 @Module({
     imports: [
@@ -13,6 +14,7 @@ import { CompanyModule } from './company/company.module';
             isGlobal: true,
         }),
         CompanyModule,
+        ApplicationModule,
     ],
     controllers: [AppController],
     providers: [

@@ -5,6 +5,6 @@ import { Injectable } from '@nestjs/common';
 export class CreateCompanyUseCase {
     constructor(private readonly companyRepo: ICompanyRepository) {}
     async execute(company: any): Promise<void> {
-        await this.companyRepo.create(company.name, company.website);
+        await this.companyRepo.save(company.name, company.website);
     }
 }

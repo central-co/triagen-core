@@ -11,7 +11,7 @@ export class CompanyRepository extends ICompanyRepository {
         super();
     }
 
-    async create(name: string, website: string): Promise<void> {
+    async save(name: string, website: string): Promise<void> {
         await this.prisma.company.create({
             data: {
                 name: name,

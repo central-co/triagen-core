@@ -7,7 +7,7 @@ export class CompanyController {
     constructor(private readonly companyService: CompanyService) {}
 
     @Post('create')
-    async create(@Body() createCompanyDto: CreateCompanyDto): Promise<void> {
-        await this.companyService.create(createCompanyDto);
+    async createCompany(@Body() createCompanyDto: CreateCompanyDto): Promise<void> {
+        await this.companyService.createCompany(createCompanyDto);
     }
 }
