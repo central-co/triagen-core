@@ -41,6 +41,7 @@ CREATE TABLE "candidate" (
 -- CreateTable
 CREATE TABLE "application" (
     "id" TEXT NOT NULL,
+    "shortCode" TEXT NOT NULL,
     "status" "ApplicationStatus" NOT NULL DEFAULT 'PENDING',
     "startAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "endAt" TIMESTAMP(3),
@@ -54,6 +55,9 @@ CREATE TABLE "application" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "candidate_email_key" ON "candidate"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "application_shortCode_key" ON "application"("shortCode");
 
 -- AddForeignKey
 ALTER TABLE "job" ADD CONSTRAINT "job_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -10,9 +10,16 @@ import { GenerateShortCodeUseCase } from "@application/usecases/generate-shortco
 import { SaveApplicationUseCase } from "@application/usecases/application/save-application.usecase";
 import { IApplicationRepository } from "@domain/interfaces/repositories/application.repository.interface";
 import { ApplicationRepository } from "@infrastructure/repositories/application.repository";
+import { SendEmailUseCase } from "@application/usecases/send-email.usecase";
+import { NodemailerModule } from "@infrastructure/providers/nodemailer.module";
+import { IEmailProvider } from "@domain/interfaces/providers/email.provider.interface";
+import { NodemailerEmailProvider } from "@infrastructure/providers/nodemailer-email.provider";
 
 @Module({
-    imports: [PrismaModule.forRoot()],
+    imports: [
+        PrismaModule.forRoot(),
+        NodemailerModule.forRoot(),
+    ],
     controllers: [ApplicationController],
     providers: [
         ApplicationService,
@@ -20,6 +27,7 @@ import { ApplicationRepository } from "@infrastructure/repositories/application.
         SaveCandidateUseCase,
         GenerateShortCodeUseCase,
         SaveApplicationUseCase,
+        SendEmailUseCase,
         {
             provide: ICandidateRepository,
             useClass: CandidateRepository,
@@ -27,7 +35,11 @@ import { ApplicationRepository } from "@infrastructure/repositories/application.
         {
             provide: IApplicationRepository,
             useClass: ApplicationRepository,
-        }
+        },
+        {
+            provide: IEmailProvider,
+            useClass: NodemailerEmailProvider,
+        },
     ],
 })
 export class ApplicationModule {}
