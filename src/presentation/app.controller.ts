@@ -12,7 +12,6 @@ export class AppController {
     }
 
     @Post('auth')
-    @Header('Access-Control-Allow-Origin', '*')
     async postAuth(@Body() authDto: AuthDto): Promise<{ token: string }> {
         return await this.appService.postAuth(authDto);
     }

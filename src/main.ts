@@ -13,8 +13,10 @@ async function bootstrap() {
         }),
     );
     app.enableCors({
-        origin: '*', // Allow all origins
-        methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
+        origin: [
+            'https://triagen.app',
+            'https://triagen-core.onrender.com',
+        ],
     });
 
     await app.listen(process.env.PORT ?? 3000);

@@ -36,7 +36,7 @@ export class ApplicationService {
         await this.saveApplicationUseCase.execute({
             shortCode: shortCode,
             candidateId: candidate.id,
-            jobId: createApplicationDto.jobId,
+            jobId: createApplicationDto.job_id,
         })
 
         await this.sendEmailUseCase.execute({
