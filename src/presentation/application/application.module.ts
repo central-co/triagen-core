@@ -5,12 +5,12 @@ import { SaveCandidateUseCase } from "@application/usecases/candidate/save-candi
 import { PrismaModule } from "@infrastructure/repositories/prisma.module";
 import { ICandidateRepository } from "@domain/interfaces/repositories/candidate.repository.interface";
 import { CandidateRepository } from "@infrastructure/repositories/candidate.repository";
-import { RetriveCandidateUseCase } from "@application/usecases/candidate/retrieve-candidate.usecase";
-import { GenerateShortCodeUseCase } from "@application/usecases/generate-shortcode.usecase";
+import { RetrieveCandidateUseCase } from "@application/usecases/candidate/retrieve-candidate.usecase";
+import { GenerateShortCodeUseCase } from "@application/usecases/shared/generate-shortcode.usecase";
 import { SaveApplicationUseCase } from "@application/usecases/application/save-application.usecase";
 import { IApplicationRepository } from "@domain/interfaces/repositories/application.repository.interface";
 import { ApplicationRepository } from "@infrastructure/repositories/application.repository";
-import { SendEmailUseCase } from "@application/usecases/send-email.usecase";
+import { SendEmailUseCase } from "@application/usecases/communication/send-email.usecase";
 import { NodemailerModule } from "@infrastructure/providers/nodemailer.module";
 import { IEmailProvider } from "@domain/interfaces/providers/email.provider.interface";
 import { NodemailerEmailProvider } from "@infrastructure/providers/nodemailer-email.provider";
@@ -23,7 +23,7 @@ import { NodemailerEmailProvider } from "@infrastructure/providers/nodemailer-em
     controllers: [ApplicationController],
     providers: [
         ApplicationService,
-        RetriveCandidateUseCase,
+        RetrieveCandidateUseCase,
         SaveCandidateUseCase,
         GenerateShortCodeUseCase,
         SaveApplicationUseCase,

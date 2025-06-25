@@ -1,9 +1,8 @@
 import { ICandidateRepository } from "@domain/interfaces/repositories/candidate.repository.interface";
-import { Inject, Injectable } from "@nestjs/common";
-import { PrismaClient } from "@prisma/client";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
-export class RetriveCandidateUseCase {
+export class RetrieveCandidateUseCase {
     constructor(
         private readonly candidateRepo: ICandidateRepository,
     ) {}

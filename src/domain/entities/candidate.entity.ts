@@ -1,4 +1,4 @@
-export class User {
+export class Candidate {
     constructor(
         public readonly id: string,
         public readonly email: string,
@@ -7,7 +7,7 @@ export class User {
         public readonly name: string,
     ) {}
 
-    static create({ id, email, password, username, name }): User {
-        return new User(id, email, password, username, name);
+    static create({ id, email, password, username, name }): Candidate {
+        return new Candidate(id, email, password, username, name);
     }
 }
