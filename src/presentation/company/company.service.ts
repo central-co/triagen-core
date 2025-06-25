@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCompanyDto } from './dto/company.dto';
 import { CreateCompanyUseCase } from '@application/usecases/company/save-company.usecase';
+import { CreateCompanyDto } from './dto/company.dto';
 
 @Injectable()
 export class CompanyService {

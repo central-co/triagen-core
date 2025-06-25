@@ -1,5 +1,5 @@
-import { StartInterviewUseCase } from "@application/usecases/interview/start-interview.usecase";
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
+import { StartInterviewUseCase } from '@application/usecases/interview/start-interview.usecase';
 
 @Injectable()
 export class InterviewService {
@@ -8,7 +8,9 @@ export class InterviewService {
     ) {}
 
     async startInterview(startInterviewDto: any): Promise<{ token: string }> {
-        const token = await this.startInterviewUseCase.execute(startInterviewDto.shortCode);
+        const token = await this.startInterviewUseCase.execute(
+            startInterviewDto.shortCode,
+        );
         return {
             token: token,
         };

@@ -13,10 +13,7 @@ async function bootstrap() {
         }),
     );
     app.enableCors({
-        origin: [
-            'https://triagen.app',
-            'https://triagen-core.onrender.com',
-        ],
+        origin: ['https://triagen.app', 'https://triagen-core.onrender.com'],
     });
 
     await app.listen(process.env.PORT ?? 3000);

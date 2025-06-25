@@ -1,24 +1,19 @@
-import { Module } from "@nestjs/common";
-import { InterviewController } from "./interview.controller";
-import { InterviewService } from "./interview.service";
-import { StartInterviewUseCase } from "@application/usecases/interview/start-interview.usecase";
-import { ITokenProvider } from "@domain/interfaces/providers/token.provider.interface";
-import { JwtTokenProvider } from "@infrastructure/providers/jwt-token.provider";
-import { IRoomProvider } from "@domain/interfaces/providers/room.provider.interface";
-import { LiveKitRoomProvider } from "@infrastructure/providers/livekit-room.provider";
-import { IApplicationRepository } from "@domain/interfaces/repositories/application.repository.interface";
-import { ApplicationRepository } from "@infrastructure/repositories/application.repository";
-import { PrismaModule } from "@infrastructure/repositories/prisma.module";
-import { LiveKitModule } from "@infrastructure/providers/livekit.module";
+import { Module } from '@nestjs/common';
+import { StartInterviewUseCase } from '@application/usecases/interview/start-interview.usecase';
+import { IRoomProvider } from '@domain/interfaces/providers/room.provider.interface';
+import { ITokenProvider } from '@domain/interfaces/providers/token.provider.interface';
+import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository.interface';
+import { JwtTokenProvider } from '@infrastructure/providers/jwt-token.provider';
+import { LiveKitRoomProvider } from '@infrastructure/providers/livekit-room.provider';
+import { LiveKitModule } from '@infrastructure/providers/livekit.module';
+import { ApplicationRepository } from '@infrastructure/repositories/application.repository';
+import { PrismaModule } from '@infrastructure/repositories/prisma.module';
+import { InterviewController } from './interview.controller';
+import { InterviewService } from './interview.service';
 
 @Module({
-    imports: [
-        PrismaModule.forRoot(),
-        LiveKitModule.forRoot(),
-    ],
-    controllers: [
-        InterviewController
-    ],
+    imports: [PrismaModule.forRoot(), LiveKitModule.forRoot()],
+    controllers: [InterviewController],
     providers: [
         InterviewService,
         StartInterviewUseCase,
@@ -33,7 +28,7 @@ import { LiveKitModule } from "@infrastructure/providers/livekit.module";
         {
             provide: IRoomProvider,
             useClass: LiveKitRoomProvider,
-        }
+        },
     ],
 })
 export class InterviewModule {}

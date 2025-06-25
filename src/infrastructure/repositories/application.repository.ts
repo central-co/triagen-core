@@ -1,6 +1,6 @@
-import { IApplicationRepository } from "@domain/interfaces/repositories/application.repository.interface";
-import { Inject, Injectable } from "@nestjs/common";
-import { PrismaClient } from "@prisma/client";
+import { Inject, Injectable } from '@nestjs/common';
+import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository.interface';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class ApplicationRepository extends IApplicationRepository {
@@ -10,13 +10,17 @@ export class ApplicationRepository extends IApplicationRepository {
         super();
     }
 
-    async save(shortCode: string, candidateId: string, jobId: string): Promise<any> {
+    async save(
+        shortCode: string,
+        candidateId: string,
+        jobId: string,
+    ): Promise<any> {
         return await this.prisma.application.create({
             data: {
                 shortCode: shortCode,
                 candidateId: candidateId,
                 jobId: jobId,
-            }
+            },
         });
     }
 
@@ -28,7 +32,7 @@ export class ApplicationRepository extends IApplicationRepository {
             include: {
                 candidate: true,
                 job: true,
-            }
+            },
         });
     }
 }

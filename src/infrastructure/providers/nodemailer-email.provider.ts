@@ -1,13 +1,14 @@
-import { IEmailProvider } from "@domain/interfaces/providers/email.provider.interface";
-import { Inject, Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { Transporter } from "nodemailer";
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { IEmailProvider } from '@domain/interfaces/providers/email.provider.interface';
+import { Transporter } from 'nodemailer';
 
 @Injectable()
 export class NodemailerEmailProvider extends IEmailProvider {
     constructor(
         private readonly configService: ConfigService,
-        @Inject('NODEMAILER_TRANSPORTER') private readonly transporter: Transporter,
+        @Inject('NODEMAILER_TRANSPORTER')
+        private readonly transporter: Transporter,
     ) {
         super();
     }
