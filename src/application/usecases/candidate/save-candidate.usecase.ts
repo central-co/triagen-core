@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+
 import { ICandidateRepository } from '@domain/interfaces/repositories/candidate.repository.interface';
 
 @Injectable()

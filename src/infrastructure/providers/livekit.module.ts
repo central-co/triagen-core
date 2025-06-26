@@ -1,7 +1,7 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+
 import { RoomServiceClient } from 'livekit-server-sdk';
-import { config } from 'process';
 
 @Module({})
 export class LiveKitModule {
@@ -14,11 +14,14 @@ export class LiveKitModule {
                 {
                     provide: LiveKitModule.ROOM_SERVICE_CLIENT,
                     useFactory: (configService: ConfigService) => {
+                        const livekitUrl = configService.getOrThrow<string>('LIVEKIT_URL');
+                        const livekitApiKey = configService.getOrThrow<string>('LIVEKIT_API_KEY');
+                        const livekitApiSecret = configService.getOrThrow<string>('LIVEKIT_API_SECRET');
+
                         return new RoomServiceClient(
-                            configService.get<string>('LIVEKIT_URL') || '',
-                            configService.get<string>('LIVEKIT_API_KEY') || '',
-                            configService.get<string>('LIVEKIT_API_SECRET') ||
-                                '',
+                            livekitUrl,
+                            livekitApiKey,
+                            livekitApiSecret,
                         );
                     },
                     inject: [ConfigService],

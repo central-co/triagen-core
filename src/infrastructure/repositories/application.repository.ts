@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+
 import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository.interface';
 import { PrismaClient } from '@prisma/client';
 

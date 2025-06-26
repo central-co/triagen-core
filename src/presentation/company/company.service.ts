@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+
 import { CreateCompanyUseCase } from '@application/usecases/company/save-company.usecase';
+
 import { CreateCompanyDto } from './dto/company.dto';
 
 @Injectable()

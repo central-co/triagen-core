@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+
 import { IEmailProvider } from '@domain/interfaces/providers/email.provider.interface';
 
 @Injectable()

@@ -2,9 +2,9 @@ import { IsOptional, IsString } from 'class-validator';
 
 export class CreateCompanyDto {
     @IsString()
-    name: string;
+        name: string;
 
     @IsString()
     @IsOptional()
-    website?: string;
+        website?: string;
 }

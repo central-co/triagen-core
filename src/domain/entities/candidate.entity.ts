@@ -8,6 +8,10 @@ export class Candidate {
     ) {}
 
     static create({ id, email, password, username, name }): Candidate {
-        return new Candidate(id, email, password, username, name);
+        return new Candidate(id,
+            email,
+            password,
+            username,
+            name);
     }
 }

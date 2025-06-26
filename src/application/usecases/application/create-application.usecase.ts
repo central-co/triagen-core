@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+
 import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository.interface';
 import { ICandidateRepository } from '@domain/interfaces/repositories/candidate.repository.interface';
+
 import { customAlphabet } from 'nanoid';
 
 @Injectable()
@@ -11,7 +13,8 @@ export class CreateApplicationUseCase {
     ) {}
 
     async execute(applicationData: any): Promise<string> {
-        console.log('Creating application with data:', applicationData);
+        console.log('Creating application with data:',
+            applicationData);
         let candidate = await this.candidateRepo.findByEmail(
             applicationData.email,
         );
@@ -39,7 +42,8 @@ export class CreateApplicationUseCase {
     private generateShortCode(): string {
         const alphabet =
             '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        const nanoid7 = customAlphabet(alphabet, 7);
+        const nanoid7 = customAlphabet(alphabet,
+            7);
         return nanoid7();
     }
 }

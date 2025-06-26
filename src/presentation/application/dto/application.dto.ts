@@ -2,17 +2,17 @@ import { IsEmail, IsString } from 'class-validator';
 
 export class CreateApplicationDto {
     @IsString()
-    first_name: string;
+        first_name: string;
 
     @IsString()
-    last_name: string;
+        last_name: string;
 
     @IsEmail()
-    email: string;
+        email: string;
 
     @IsString()
-    resume: string;
+        resume: string;
 
     @IsString()
-    job_id: string;
+        job_id: string;
 }

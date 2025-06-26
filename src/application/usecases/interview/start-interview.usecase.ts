@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+
 import { IRoomProvider } from '@domain/interfaces/providers/room.provider.interface';
 import { ITokenProvider } from '@domain/interfaces/providers/token.provider.interface';
 import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository.interface';
@@ -21,14 +22,15 @@ export class StartInterviewUseCase {
         }
 
         const roomName = `room-${application.candidate.email.toLowerCase()}-${application.job.title.toLowerCase()}`;
-        await this.roomProvider.createRoom(roomName, {
-            jobTitle: application.job.title,
-            jobDescription: application.job.description,
-            candidateEmail: application.candidate.email,
-            candidateFirstName: application.candidate.firstName,
-            candidateLastName: application.candidate.lastName,
-            candidateResume: application.candidate.resume,
-        });
+        await this.roomProvider.createRoom(roomName,
+            {
+                jobTitle: application.job.title,
+                jobDescription: application.job.description,
+                candidateEmail: application.candidate.email,
+                candidateFirstName: application.candidate.firstName,
+                candidateLastName: application.candidate.lastName,
+                candidateResume: application.candidate.resume,
+            });
         console.log(await this.roomProvider.listRooms());
 
         const token = await this.tokenProvider.generate(

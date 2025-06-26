@@ -1,4 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
+
 import { ApplicationService } from './application.service';
 import { CreateApplicationDto } from './dto/application.dto';
 

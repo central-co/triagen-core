@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+
 import { StartInterviewUseCase } from '@application/usecases/interview/start-interview.usecase';
 
 @Injectable()

@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+
 import { CreateApplicationUseCase } from '@application/usecases/application/create-application.usecase';
 import { SendEmailUseCase } from '@application/usecases/communication/send-email.usecase';
+
 import { CreateApplicationDto } from './dto/application.dto';
 
 @Injectable()
