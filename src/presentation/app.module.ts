@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from '@presentation/app.controller';
 
 import { ApplicationModule } from './application/application.module';
-import { CompanyModule } from './company/company.module';
 import { InterviewModule } from './interview/interview.module';
 
 @Module({
@@ -12,7 +11,6 @@ import { InterviewModule } from './interview/interview.module';
         ConfigModule.forRoot({
             isGlobal: true,
         }),
-        CompanyModule,
         ApplicationModule,
         InterviewModule,
     ],

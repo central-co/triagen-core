@@ -11,29 +11,25 @@ export class ApplicationRepository extends IApplicationRepository {
         super();
     }
 
-    async save(
-        shortCode: string,
-        candidateId: string,
-        jobId: string,
-    ): Promise<any> {
-        return await this.prisma.application.create({
+    async save(interviewToken: string, job: { id: string; }, candidate: { name: string; email: string; phone?: string; resume?: string; }): Promise<any> {
+        return await this.prisma.candidates.create({
             data: {
-                shortCode: shortCode,
-                candidateId: candidateId,
-                jobId: jobId,
+                job_id: job.id,
+                name: candidate.name,
+                email: candidate.email,
+                phone: candidate.phone,
+                resume_url: candidate.resume,
+                interview_token: interviewToken,
             },
         });
     }
 
-    async findByShortCode(shortCode: string): Promise<any> {
-        return await this.prisma.application.findUnique({
+    async findByShortCode(interviewToken: string): Promise<any> {
+        return await this.prisma.candidates.findUnique({
             where: {
-                shortCode: shortCode,
-            },
-            include: {
-                candidate: true,
-                job: true,
-            },
+                interview_token: interviewToken,
+            }
+
         });
     }
 }

@@ -12,24 +12,24 @@ export class StartInterviewUseCase {
         private readonly roomProvider: IRoomProvider,
     ) {}
 
-    async execute(shortCode: string): Promise<string> {
+    async execute(interviewCode: string): Promise<string> {
         const application =
-            await this.applicationRepo.findByShortCode(shortCode);
+            await this.applicationRepo.findByShortCode(interviewCode);
         if (!application) {
             throw new NotFoundException(
-                `Application with short code ${shortCode} not found`,
+                `Application with short code ${interviewCode} not found`,
             );
         }
 
-        const roomName = `room-${application.candidate.email.toLowerCase()}-${application.job.title.toLowerCase()}`;
-        await this.roomProvider.createRoom(roomName,
+        const roomName = `room-${application.email.toLowerCase()}-${application.jobs.id}`;
+        await this.roomProvider.createRoom(
+            roomName,
             {
-                jobTitle: application.job.title,
-                jobDescription: application.job.description,
-                candidateEmail: application.candidate.email,
-                candidateFirstName: application.candidate.firstName,
-                candidateLastName: application.candidate.lastName,
-                candidateResume: application.candidate.resume,
+                jobTitle: application.jobs.title,
+                jobDescription: application.jobs.description,
+                candidateEmail: application.email,
+                candidateName: application.name,
+                candidateResume: application.resume_url,
             });
         console.log(await this.roomProvider.listRooms());
 

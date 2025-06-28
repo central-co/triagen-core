@@ -1,79 +1,202 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["auth", "public"]
 }
 
-model Company {
-  id          String    @id @default(cuid())
-  name        String
-  website     String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  jobs        Job[]
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model candidates {
+  id                     String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  job_id                 String              @db.Uuid
+  name                   String
+  email                  String
+  phone                  String?
+  resume_url             String?
+  status                 String?             @default("pending")
+  is_favorite            Boolean?            @default(false)
+  notes                  String?
+  interview_token        String?             @unique
+  interview_started_at   DateTime?           @db.Timestamptz(6)
+  interview_completed_at DateTime?           @db.Timestamptz(6)
+  created_at             DateTime?           @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?           @default(now()) @db.Timestamptz(6)
+  jobs                   jobs                @relation(fields: [job_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  interview_reports      interview_reports[]
 
-  @@map("company")
+  @@index([email])
+  @@index([job_id])
+  @@index([status])
+  @@schema("public")
 }
 
-model Job {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model companies {
+  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id        String?          @db.Uuid
+  name           String
+  cnpj           String?
+  contact_email  String?
+  contact_phone  String?
+  address        String?
+  created_at     DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime?        @default(now()) @db.Timestamptz(6)
+  jobs           jobs[]
+  subscriptions  subscriptions[]
+  usage_tracking usage_tracking[]
 
-  applications Application[]
-  companyId   String
-  company     Company @relation(fields: [companyId], references: [id])
-
-
-  @@map("job")
+  @@index([user_id])
+  @@schema("public")
 }
 
-model Candidate {
-  id          String    @id @default(cuid())
-  firstName   String
-  lastName    String
-  email       String    @unique
-  phone       String?
-  resume      String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model interview_reports {
+  id                 String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  candidate_id       String     @db.Uuid
+  summary            String?
+  alignment_analysis String?
+  overall_score      Decimal?   @db.Decimal(3, 2)
+  category_scores    Json?      @default("{}")
+  recommendations    String?
+  transcript_url     String?
+  recording_url      String?
+  created_at         DateTime?  @default(now()) @db.Timestamptz(6)
+  candidates         candidates @relation(fields: [candidate_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  applications Application[]
-
-  @@map("candidate")
+  @@index([candidate_id])
+  @@schema("public")
 }
 
-model Application {
-  id           String             @id @default(cuid())
-  shortCode    String             @unique
-  status       ApplicationStatus  @default(PENDING)
-  startAt      DateTime           @default(now())
-  endAt        DateTime?
-  createdAt    DateTime           @default(now())
-  updatedAt    DateTime           @updatedAt
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model jobs {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_id    String       @db.Uuid
+  title         String
+  description   String
+  location      String?
+  contract_type String?      @default("full-time")
+  custom_fields Json?        @default("{}")
+  status        String?      @default("open")
+  deadline      DateTime?    @db.Timestamptz(6)
+  created_at    DateTime?    @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?    @default(now()) @db.Timestamptz(6)
+  candidates    candidates[]
+  companies     companies    @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-  jobId        String
-  job          Job                @relation(fields: [jobId], references: [id])
-  candidateId  String
-  candidate    Candidate          @relation(fields: [candidateId], references: [id])
-
-  @@map("application")
+  @@index([company_id])
+  @@index([status])
+  @@schema("public")
 }
 
-enum ApplicationStatus {
-  PENDING
-  INTERVIEWED
-  REVIEWED
-  CANCELLED
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model plans {
+  id                String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String
+  description       String?
+  price_monthly     Decimal?        @db.Decimal(10, 2)
+  price_yearly      Decimal?        @db.Decimal(10, 2)
+  interview_credits Int?            @default(0)
+  features          Json?           @default("{}")
+  is_active         Boolean?        @default(true)
+  created_at        DateTime?       @default(now()) @db.Timestamptz(6)
+  subscriptions     subscriptions[]
+
+  @@schema("public")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model subscriptions {
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_id           String    @db.Uuid
+  plan_id              String    @db.Uuid
+  status               String?   @default("active")
+  current_period_start DateTime? @default(now()) @db.Timestamptz(6)
+  current_period_end   DateTime? @db.Timestamptz(6)
+  credits_remaining    Int?      @default(0)
+  created_at           DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime? @default(now()) @db.Timestamptz(6)
+  companies            companies @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  plans                plans     @relation(fields: [plan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([company_id])
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model usage_tracking {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_id   String    @db.Uuid
+  action_type  String
+  resource_id  String?   @db.Uuid
+  credits_used Int?      @default(1)
+  metadata     Json?     @default("{}")
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  companies    companies @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([company_id])
+  @@schema("public")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model waitlist {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email              String   @unique
+  name               String?
+  company            String?
+  created_at         DateTime @default(now()) @db.Timestamptz(6)
+  job_title          String?
+  newsletter_consent Boolean  @default(false)
+
+  @@index([created_at(sort: Desc)])
+  @@schema("public")
+}
+
+enum aal_level {
+  aal1
+  aal2
+  aal3
+
+  @@schema("auth")
+}
+
+enum code_challenge_method {
+  s256
+  plain
+
+  @@schema("auth")
+}
+
+enum factor_status {
+  unverified
+  verified
+
+  @@schema("auth")
+}
+
+enum factor_type {
+  totp
+  webauthn
+  phone
+
+  @@schema("auth")
+}
+
+enum one_time_token_type {
+  confirmation_token
+  reauthentication_token
+  recovery_token
+  email_change_token_new
+  email_change_token_current
+  phone_change_token
+
+  @@schema("auth")
 }

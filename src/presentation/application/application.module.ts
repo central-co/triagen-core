@@ -4,11 +4,9 @@ import { CreateApplicationUseCase } from '@application/usecases/application/crea
 import { SendEmailUseCase } from '@application/usecases/communication/send-email.usecase';
 import { IEmailProvider } from '@domain/interfaces/providers/email.provider.interface';
 import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository';
-import { ICandidateRepository } from '@domain/interfaces/repositories/candidate.repository';
 import { ResendModule } from '@infrastructure/providers/resend.module';
 import { ResendEmailProvider } from '@infrastructure/providers/resend-email.provider';
 import { ApplicationRepository } from '@infrastructure/repositories/application.repository';
-import { CandidateRepository } from '@infrastructure/repositories/candidate.repository';
 import { PrismaModule } from '@infrastructure/repositories/prisma.module';
 
 import { ApplicationController } from './application.controller';
@@ -21,10 +19,6 @@ import { ApplicationService } from './application.service';
         ApplicationService,
         CreateApplicationUseCase,
         SendEmailUseCase,
-        {
-            provide: ICandidateRepository,
-            useClass: CandidateRepository,
-        },
         {
             provide: IApplicationRepository,
             useClass: ApplicationRepository,
