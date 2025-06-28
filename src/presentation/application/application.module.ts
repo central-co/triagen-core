@@ -4,7 +4,7 @@ import { CreateApplicationUseCase } from '@application/usecases/application/crea
 import { SendEmailUseCase } from '@application/usecases/communication/send-email.usecase';
 import { IEmailProvider } from '@domain/interfaces/providers/email.provider.interface';
 import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository';
-import { ICandidateRepository } from '@domain/interfaces/repositories/candidate.repository.interface';
+import { ICandidateRepository } from '@domain/interfaces/repositories/candidate.repository';
 import { ResendModule } from '@infrastructure/providers/resend.module';
 import { ResendEmailProvider } from '@infrastructure/providers/resend-email.provider';
 import { ApplicationRepository } from '@infrastructure/repositories/application.repository';
