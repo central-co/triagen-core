@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { ICompanyRepository } from '@domain/interfaces/repositories/company.repository.interface';
+import { ICompanyRepository } from '@domain/interfaces/repositories/company.repository';
 
 @Injectable()
 export class CreateCompanyUseCase {

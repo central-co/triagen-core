@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { CreateCompanyUseCase } from '@application/usecases/company/save-company.usecase';
-import { ICompanyRepository } from '@domain/interfaces/repositories/company.repository.interface';
+import { ICompanyRepository } from '@domain/interfaces/repositories/company.repository';
 import { CompanyRepository } from '@infrastructure/repositories/company.repository';
 import { PrismaModule } from '@infrastructure/repositories/prisma.module';
 
