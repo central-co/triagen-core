@@ -28,7 +28,11 @@ export class ApplicationRepository extends IApplicationRepository {
         return await this.prisma.candidates.findUnique({
             where: {
                 interview_token: interviewToken,
+            },
+            include: {
+                jobs: true,
             }
+
 
         });
     }

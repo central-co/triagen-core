@@ -13,13 +13,14 @@ export class StartInterviewUseCase {
     ) {}
 
     async execute(interviewCode: string): Promise<string> {
-        const application =
-            await this.applicationRepo.findByShortCode(interviewCode);
+        const application = await this.applicationRepo.findByShortCode(interviewCode);
         if (!application) {
             throw new NotFoundException(
                 `Application with short code ${interviewCode} not found`,
             );
         }
+
+        console.log('Application found:', application);
 
         const roomName = `room-${application.email.toLowerCase()}-${application.jobs.id}`;
         await this.roomProvider.createRoom(
@@ -34,8 +35,8 @@ export class StartInterviewUseCase {
         console.log(await this.roomProvider.listRooms());
 
         const token = await this.tokenProvider.generate(
-            application.candidate.email,
-            application.candidate.firstName,
+            application.email,
+            application.name,
             roomName,
         );
 
