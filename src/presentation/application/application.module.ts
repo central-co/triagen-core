@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { CreateApplicationUseCase } from '@application/usecases/application/create-application.usecase';
 import { SendEmailUseCase } from '@application/usecases/communication/send-email.usecase';
 import { IEmailProvider } from '@domain/interfaces/providers/email.provider.interface';
-import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository.interface';
+import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository';
 import { ICandidateRepository } from '@domain/interfaces/repositories/candidate.repository.interface';
 import { ResendModule } from '@infrastructure/providers/resend.module';
 import { ResendEmailProvider } from '@infrastructure/providers/resend-email.provider';

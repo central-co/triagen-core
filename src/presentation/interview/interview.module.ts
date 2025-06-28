@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { StartInterviewUseCase } from '@application/usecases/interview/start-interview.usecase';
 import { IRoomProvider } from '@domain/interfaces/providers/room.provider.interface';
 import { ITokenProvider } from '@domain/interfaces/providers/token.provider.interface';
-import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository.interface';
+import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository';
 import { JwtTokenProvider } from '@infrastructure/providers/jwt-token.provider';
 import { LiveKitModule } from '@infrastructure/providers/livekit.module';
 import { LiveKitRoomProvider } from '@infrastructure/providers/livekit-room.provider';

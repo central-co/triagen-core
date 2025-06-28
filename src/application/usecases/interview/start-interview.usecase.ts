@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { IRoomProvider } from '@domain/interfaces/providers/room.provider.interface';
 import { ITokenProvider } from '@domain/interfaces/providers/token.provider.interface';
-import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository.interface';
+import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository';
 
 @Injectable()
 export class StartInterviewUseCase {

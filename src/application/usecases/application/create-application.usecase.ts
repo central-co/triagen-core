@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository.interface';
+import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository';
 import { ICandidateRepository } from '@domain/interfaces/repositories/candidate.repository.interface';
 
 import { customAlphabet } from 'nanoid';
