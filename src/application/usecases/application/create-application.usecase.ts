@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { IApplicationRepository } from '@domain/interfaces/repositories/application.repository';
+import { CreateApplicationDto } from '@presentation/application/dto/application.dto';
 
 import { customAlphabet } from 'nanoid';
 
@@ -10,9 +11,11 @@ export class CreateApplicationUseCase {
         private readonly applicationRepo: IApplicationRepository,
     ) {}
 
-    async execute(applicationData: any): Promise<string> {
-        console.log('Creating application with data:',
-            applicationData);
+    async execute(applicationData: CreateApplicationDto): Promise<string> {
+        console.log(`Creating application with data: ${JSON.stringify(applicationData)}`);
+
+        const criterias = this.planInterview();
+        console.log(`Interview criteria: ${JSON.stringify(criterias)}`);
 
         const interviewCode = this.generateShortCode();
 
@@ -25,7 +28,7 @@ export class CreateApplicationUseCase {
                 name: applicationData.name,
                 email: applicationData.email,
                 phone: applicationData.phone,
-                resume: applicationData.resume,
+                resume: applicationData.resume_text,
             },
         );
 
@@ -35,8 +38,14 @@ export class CreateApplicationUseCase {
     private generateShortCode(): string {
         const alphabet =
             '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        const nanoid7 = customAlphabet(alphabet,
-            7);
+        const nanoid7 = customAlphabet(
+            alphabet,
+            7,
+        );
         return nanoid7();
+    }
+
+    private planInterview(): undefined {
+        return;
     }
 }

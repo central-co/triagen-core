@@ -14,11 +14,8 @@ export class ApplicationService {
         private readonly sendEmailUseCase: SendEmailUseCase,
     ) {}
 
-    async createApplication(
-        createApplicationDto: CreateApplicationDto,
-    ): Promise<string> {
-        const shortCode =
-            await this.createApplicationUseCase.execute(createApplicationDto);
+    async createApplication(createApplicationDto: CreateApplicationDto): Promise<string> {
+        const shortCode = await this.createApplicationUseCase.execute(createApplicationDto);
 
         await this.sendEmailUseCase.execute({
             to: createApplicationDto.email,

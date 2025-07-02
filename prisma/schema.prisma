@@ -13,26 +13,32 @@ datasource db {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model candidates {
-  id                     String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  job_id                 String              @db.Uuid
+  id                     String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  job_id                 String               @db.Uuid
   name                   String
   email                  String
   phone                  String?
   resume_url             String?
-  status                 String?             @default("pending")
-  is_favorite            Boolean?            @default(false)
+  status                 String?              @default("pending")
+  is_favorite            Boolean?             @default(false)
   notes                  String?
-  interview_token        String?             @unique
-  interview_started_at   DateTime?           @db.Timestamptz(6)
-  interview_completed_at DateTime?           @db.Timestamptz(6)
-  created_at             DateTime?           @default(now()) @db.Timestamptz(6)
-  updated_at             DateTime?           @default(now()) @db.Timestamptz(6)
-  jobs                   jobs                @relation(fields: [job_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  interview_token        String?              @unique
+  interview_started_at   DateTime?            @db.Timestamptz(6)
+  interview_completed_at DateTime?            @db.Timestamptz(6)
+  created_at             DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?            @default(now()) @db.Timestamptz(6)
+  interview_plan_id      String?
+  resume_text            String?
+  custom_answers         Json?                @default("{}")
+  jobs                   jobs                 @relation(fields: [job_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  interview_contexts     interview_contexts[]
   interview_reports      interview_reports[]
+  interview_sessions     interview_sessions[]
 
   @@index([email])
   @@index([job_id])
   @@index([status])
+  @@index([interview_plan_id])
   @@schema("public")
 }
 
@@ -58,17 +64,23 @@ model companies {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model interview_reports {
-  id                 String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  candidate_id       String     @db.Uuid
-  summary            String?
-  alignment_analysis String?
-  overall_score      Decimal?   @db.Decimal(3, 2)
-  category_scores    Json?      @default("{}")
-  recommendations    String?
-  transcript_url     String?
-  recording_url      String?
-  created_at         DateTime?  @default(now()) @db.Timestamptz(6)
-  candidates         candidates @relation(fields: [candidate_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id                  String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  candidate_id        String     @db.Uuid
+  summary             String?
+  alignment_analysis  String?
+  overall_score       Decimal?   @db.Decimal(3, 2)
+  category_scores     Json?      @default("{}")
+  recommendations     String?
+  transcript_url      String?
+  recording_url       String?
+  created_at          DateTime?  @default(now()) @db.Timestamptz(6)
+  criteria_scores     Json?      @default("{}")
+  compatibility_score Decimal?   @db.Decimal(3, 2)
+  strengths           String[]
+  weaknesses          String[]
+  insights            String?
+  llm_model           String?    @default("gpt-4")
+  candidates          candidates @relation(fields: [candidate_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([candidate_id])
   @@schema("public")
@@ -77,19 +89,27 @@ model interview_reports {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model jobs {
-  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  company_id    String       @db.Uuid
-  title         String
-  description   String
-  location      String?
-  contract_type String?      @default("full-time")
-  custom_fields Json?        @default("{}")
-  status        String?      @default("open")
-  deadline      DateTime?    @db.Timestamptz(6)
-  created_at    DateTime?    @default(now()) @db.Timestamptz(6)
-  updated_at    DateTime?    @default(now()) @db.Timestamptz(6)
-  candidates    candidates[]
-  companies     companies    @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id                  String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  company_id          String       @db.Uuid
+  title               String
+  description         String
+  location            String?
+  contract_type       String?      @default("full-time")
+  custom_fields       Json?        @default("{}")
+  status              String?      @default("open")
+  deadline            DateTime?    @db.Timestamptz(6)
+  created_at          DateTime?    @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?    @default(now()) @db.Timestamptz(6)
+  salary_info         String?
+  benefits            String?
+  requirements        Json?        @default("[]")
+  differentials       Json?        @default("[]")
+  work_model          String?      @default("remoto")
+  salary_range        String?
+  evaluation_criteria Json?        @default("[]")
+  custom_questions    Json?        @default("[]")
+  candidates          candidates[]
+  companies           companies    @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([company_id])
   @@index([status])
@@ -157,6 +177,167 @@ model waitlist {
   newsletter_consent Boolean  @default(false)
 
   @@index([created_at(sort: Desc)])
+  @@schema("public")
+}
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model audit_log_entries {
+// @@schema("auth")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model flow_state {
+// @@schema("auth")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model identities {
+// @@schema("auth")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model instances {
+// @@schema("auth")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model mfa_amr_claims {
+// @@schema("auth")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model mfa_challenges {
+// @@schema("auth")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model mfa_factors {
+// @@schema("auth")
+// }
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model one_time_tokens {
+// @@schema("auth")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model refresh_tokens {
+// @@schema("auth")
+// }
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model saml_providers {
+// @@schema("auth")
+// }
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model saml_relay_states {
+// @@schema("auth")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model schema_migrations {
+// @@schema("auth")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+// model sessions {
+// @@schema("auth")
+// }
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+// model sso_domains {
+// @@schema("auth")
+// }
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+// model sso_providers {
+// @@schema("auth")
+// }
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+// model users {
+// @@schema("auth")
+// }
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model interview_contexts {
+  id                  String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  candidate_id        String     @db.Uuid
+  contextual_criteria Json?      @default("[]")
+  generated_at        DateTime?  @default(now()) @db.Timestamptz(6)
+  llm_model           String?    @default("gpt-4")
+  processing_time_ms  Int?
+  created_at          DateTime?  @default(now()) @db.Timestamptz(6)
+  candidates          candidates @relation(fields: [candidate_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([candidate_id])
+  @@schema("public")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model interview_sessions {
+  id                          String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  candidate_id                String     @db.Uuid
+  session_token               String     @unique
+  status                      String?    @default("pending")
+  mandatory_criteria_covered  Json?      @default("{}")
+  contextual_criteria_covered Json?      @default("{}")
+  conversation_log            Json?      @default("[]")
+  started_at                  DateTime?  @db.Timestamptz(6)
+  completed_at                DateTime?  @db.Timestamptz(6)
+  duration_seconds            Int?
+  llm_model                   String?    @default("gpt-4")
+  created_at                  DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at                  DateTime?  @default(now()) @db.Timestamptz(6)
+  candidates                  candidates @relation(fields: [candidate_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([candidate_id])
+  @@index([status])
+  @@index([session_token], map: "interview_sessions_token_idx")
   @@schema("public")
 }
 

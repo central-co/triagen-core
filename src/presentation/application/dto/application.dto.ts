@@ -13,7 +13,7 @@ export class CreateApplicationDto {
 
     @IsOptional()
     @IsString()
-        resume: string;
+        resume_text: string;
 
     @IsString()
         job_id: string;

@@ -1,6 +1,6 @@
-import { IsString } from "class-validator";
+import { IsString } from 'class-validator';
 
 export class StartInterviewDto {
     @IsString()
-    interview_code: string;
+        interview_code: string;
 }
