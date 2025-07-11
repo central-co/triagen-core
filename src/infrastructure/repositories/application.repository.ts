@@ -24,16 +24,14 @@ export class ApplicationRepository extends IApplicationRepository {
         });
     }
 
-    async findByShortCode(interviewToken: string): Promise<any> {
+    async findByInterviewToken(interviewToken: string): Promise<any> {
         return await this.prisma.candidates.findUnique({
             where: {
                 interview_token: interviewToken,
             },
             include: {
                 jobs: true,
-            }
-
-
+            },
         });
     }
 }

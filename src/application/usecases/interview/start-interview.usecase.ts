@@ -12,11 +12,11 @@ export class StartInterviewUseCase {
         private readonly roomProvider: IRoomProvider,
     ) {}
 
-    async execute(interviewCode: string): Promise<string> {
-        const application = await this.applicationRepo.findByShortCode(interviewCode);
+    async execute(interviewToken: string): Promise<string> {
+        const application = await this.applicationRepo.findByInterviewToken(interviewToken);
         if (!application) {
             throw new NotFoundException(
-                `Application with short code ${interviewCode} not found`,
+                `Application with short code ${interviewToken} not found`,
             );
         }
 
